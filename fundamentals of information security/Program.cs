@@ -87,16 +87,20 @@ namespace fundamentals_of_information_security
             }
             return DecryptionMessage.ToString();
         }
+        //декодирует получая длину ключа ,сооющение, алфавит
+        //декодирует посредством анализа
         public static void Decryption(int keyLength, string CryptionMessage, string alphabet)
         {
+            //получает ключ сдвиг
             int[][] KeysAsOffset = Chiffre_De_Vigenere.CreateKeysAsOffset(CryptionMessage, keyLength, alphabet);
 
+            //рисует гистограмы частоты появления символов по группам
             for (int i = 0; i < keyLength; i++)
             {
                 Chiffre_De_Vigenere.DrawHistogram(CryptionMessage, i, keyLength, alphabet);
                 Console.WriteLine(alphabet + i);
             }
-
+            //пишет ключ сдвиг
             foreach (var KeyAsOffset in KeysAsOffset)
             {
                 foreach (var item in KeyAsOffset)
@@ -104,6 +108,8 @@ namespace fundamentals_of_information_security
                     Console.WriteLine(item);
                 }
             }
+
+            //в ключ сдвиг подставляет все буквы алфавита поочередно
             string[] Keys = Chiffre_De_Vigenere.KeySelection(KeysAsOffset, alphabet);
             foreach (var i in Keys)
             {
@@ -131,7 +137,7 @@ namespace fundamentals_of_information_security
             Console.WriteLine(Draw(CharacterPercentageInt)); 
         }
 
-        // считывает максивум в каждой группе-символключа и возвращает сдвиги относительно первого макчимума группы-символключа
+        // считывает максивум в каждой группе и возвращает сдвиги относительно первого макчимума группы-символключа
         //Возвлащает только один ключ-сдвиг, хотя максимумов может быть несколько в одной группе или они могут близко равны        
         //Необходимо дописать функцию ,чтобы она находиила все возможные ключи-сдвиг, т.е. все возможные комбинации
         public static int[][] CreateKeysAsOffset(string message, int keyLength, string alphabet)
@@ -154,7 +160,7 @@ namespace fundamentals_of_information_security
             KeysAsOffset[0] = KeyAsOffset;
             return KeysAsOffset;
         }
-        //возвращает переборку всех ключей к сдвиг-ключам
+        //возвращает переборку всех ключей по сдвиг-ключам
         public static string[] KeySelection(int[][] KeysAsOffset, string alphabet)
         {
             
@@ -195,7 +201,7 @@ namespace fundamentals_of_information_security
         }
         
 
-
+        //заполнение таблицы виженера аофавитом
         private static string[] FillingTable(string Alphabet)
         {
             string TempTableSymbols = Alphabet;
@@ -208,6 +214,7 @@ namespace fundamentals_of_information_security
             }
             return Table;
         }
+        //сдвигание строки на символ влево
         private static string SingleLeftShift(string array)
         {
             StringBuilder TempArray = new StringBuilder(array);
@@ -220,6 +227,7 @@ namespace fundamentals_of_information_security
             TempArray[array.Length - 1]= array[0];
             return TempArray.ToString();
         }
+        //Количество появления символа в сообщении , если он есть в алффавите
         private static int[] SymbolFrequencyAnalysis(string message, int keyLength, int firstElementNumber, string Alphabet)
         {
             if (keyLength == 0) { keyLength = 1; }
@@ -236,6 +244,7 @@ namespace fundamentals_of_information_security
             }
             return SymbolFrequency;
         }
+        //частота появления в процентах
         private static float[] NumberOfMeetingsAsPercentage(int[] SymbolFrequency)
         {
             float[] CharacterPercentage = new float[SymbolFrequency.Length];
@@ -246,7 +255,8 @@ namespace fundamentals_of_information_security
             }            
             return CharacterPercentage;
         }
-        private static string Draw(int[] waves)//
+        //рисует столбцы высотой указанной в ячейках 
+        private static string Draw(int[] waves)
         {
             char c1 = '■', c2 = '.';
             string strWaves = "";
